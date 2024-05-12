@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://d58s3yg82pd0"]
+
+[ext_resource type="Texture2D" uid="uid://bwlffyv02rqrc" path="res://addons/kenney_prototype_textures/red/texture_10.png" id="1_0osbd"]
+[ext_resource type="Script" path="res://mob.gd" id="1_14a5s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2byji"]
+albedo_texture = ExtResource("1_0osbd")
+uv1_triplanar = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rmkjg"]
+material = SubResource("StandardMaterial3D_2byji")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yubeu"]
+
+[node name="Mob" type="CharacterBody3D" groups=["enemy"]]
+script = ExtResource("1_14a5s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.985799, 0)
+mesh = SubResource("CapsuleMesh_rmkjg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.985799, 0)
+shape = SubResource("CapsuleShape3D_yubeu")
+
+[connection signal="tree_entered" from="CollisionShape3D" to="CollisionShape3D" method="_on_tree_entered"]

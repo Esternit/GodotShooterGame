@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://clib7renp835v"]
+
+[ext_resource type="PackedScene" path="res://environment.blend" id="1_qbnk5"]
+[ext_resource type="Texture2D" uid="uid://di5kpbhlbr1xj" path="res://addons/kenney_prototype_textures/dark/texture_09.png" id="2_gasat"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eswnc"]
+albedo_texture = ExtResource("2_gasat")
+uv1_triplanar = true
+
+[node name="environment" instance=ExtResource("1_qbnk5")]
+
+[node name="Plane" parent="." index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_eswnc")

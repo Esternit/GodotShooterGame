@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=3 uid="uid://1sqix5tdqlix"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_k0vmn"]
+[ext_resource type="PackedScene" uid="uid://d58s3yg82pd0" path="res://mob.tscn" id="2_ehmxn"]
+[ext_resource type="PackedScene" uid="uid://c35wqxbp744kr" path="res://player.tscn" id="2_t6bpb"]
+[ext_resource type="PackedScene" uid="uid://cadjry74dd3kv" path="res://map.tscn" id="3_m1686"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rih58"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_qfkuf"]
+sky_material = SubResource("ProceduralSkyMaterial_rih58")
+
+[sub_resource type="Environment" id="Environment_t8ic5"]
+background_mode = 2
+sky = SubResource("Sky_qfkuf")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="Curve3D" id="Curve3D_flngx"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 24.6628, 2.84806, -22.2971, 0, 0, 0, 0, 0, 0, 24.6571, 2.82272, 31.3381, 0, 0, 0, 0, 0, 0, -18.8721, 2.82378, 30.4072, 0, 0, 0, 0, 0, 0, -18.3096, 2.7841, -19.469, 0, 0, 0, 0, 0, 0, 24.6628, 2.84806, -22.2971),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[node name="World" type="Node"]
+script = ExtResource("1_k0vmn")
+mob_scene = ExtResource("2_ehmxn")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_t8ic5")
+
+[node name="Player" parent="." instance=ExtResource("2_t6bpb")]
+
+[node name="map" parent="." instance=ExtResource("3_m1686")]
+
+[node name="SpawnPath" type="Path3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.08079, -0.00340271, -4.58861)
+curve = SubResource("Curve3D_flngx")
+
+[node name="SpawnLocation" type="PathFollow3D" parent="SpawnPath"]
+transform = Transform3D(-1, -5.01963e-08, 0.000106247, 5.32907e-15, 1, 0.000472448, -0.000106247, 0.000472448, -1, 24.6628, 2.84806, -22.2971)
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
