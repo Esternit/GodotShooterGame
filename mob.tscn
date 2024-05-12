@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://d58s3yg82pd0"]
+[gd_scene load_steps=13 format=3 uid="uid://d58s3yg82pd0"]
 
 [ext_resource type="Texture2D" uid="uid://bwlffyv02rqrc" path="res://addons/kenney_prototype_textures/red/texture_10.png" id="1_0osbd"]
 [ext_resource type="Script" path="res://mob.gd" id="1_14a5s"]
+[ext_resource type="PackedScene" uid="uid://dh4egc6v3bx2y" path="res://pistol.blend" id="3_b8ww6"]
+[ext_resource type="Texture2D" uid="uid://d2ellnfb76ynv" path="res://addons/kenney_particle_pack/star_06.png" id="4_4e18u"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2byji"]
 albedo_texture = ExtResource("1_0osbd")
@@ -11,6 +13,35 @@ uv1_triplanar = true
 material = SubResource("StandardMaterial3D_2byji")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yubeu"]
+
+[sub_resource type="Gradient" id="Gradient_re104"]
+offsets = PackedFloat32Array(0, 0.245455)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ey42o"]
+gradient = SubResource("Gradient_re104")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0dkff"]
+angle_min = 45.0
+angle_max = 45.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_ey42o")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8mj6b"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.776471, 0.713726, 0.396078, 1)
+albedo_texture = ExtResource("4_4e18u")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wjqdd"]
+material = SubResource("StandardMaterial3D_8mj6b")
+size = Vector2(0.5, 0.5)
+orientation = 2
 
 [node name="Mob" type="CharacterBody3D" groups=["enemy"]]
 script = ExtResource("1_14a5s")
@@ -22,5 +53,22 @@ mesh = SubResource("CapsuleMesh_rmkjg")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.985799, 0)
 shape = SubResource("CapsuleShape3D_yubeu")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+height = 5.36
+radius = 5.45
+
+[node name="pistol" parent="." groups=["gun"] instance=ExtResource("3_b8ww6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.75, -0.5)
+
+[node name="MuzzleFlash" type="GPUParticles3D" parent="pistol"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0591493, -0.322411)
+emitting = false
+amount = 1
+lifetime = 0.25
+one_shot = true
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_0dkff")
+draw_pass_1 = SubResource("PlaneMesh_wjqdd")
 
 [connection signal="tree_entered" from="CollisionShape3D" to="CollisionShape3D" method="_on_tree_entered"]

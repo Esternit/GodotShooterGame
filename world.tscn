@@ -51,4 +51,8 @@ transform = Transform3D(-1, -5.01963e-08, 0.000106247, 5.32907e-15, 1, 0.0004724
 wait_time = 10.0
 autostart = true
 
+[node name="Mob" parent="." instance=ExtResource("2_ehmxn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.229993, -8.70004)
+player_path = NodePath("../Player")
+
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]

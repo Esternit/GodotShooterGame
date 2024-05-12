@@ -14,6 +14,7 @@ func _ready():
 func _process(delta):
 	position += transform.basis * Vector3(0,0, -SPEED) * delta
 	if ray.is_colliding():
+		
 		print(ray.get_collider())
 		mesh.visible = false
 		particles.emitting = true

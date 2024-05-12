@@ -13,16 +13,16 @@
 offsets = PackedFloat32Array(0, 0.245455)
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ey42o"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k1tk6"]
 gradient = SubResource("Gradient_dls4r")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_auymo"]
 angle_min = 45.0
 angle_max = 45.0
 gravity = Vector3(0, 0, 0)
-color_ramp = SubResource("GradientTexture1D_ey42o")
+color_ramp = SubResource("GradientTexture1D_k1tk6")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8mj6b"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xjcc5"]
 transparency = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
@@ -34,7 +34,7 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ucu3a"]
-material = SubResource("StandardMaterial3D_8mj6b")
+material = SubResource("StandardMaterial3D_xjcc5")
 size = Vector2(0.5, 0.5)
 orientation = 2
 
