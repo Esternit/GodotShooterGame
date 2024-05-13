@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var anim_player = $AnimationPlayer
 @onready var muzzle_flash = $Camera3D/pistol/MuzzleFlash
 @onready var raycast = $Camera3D/RayCast3D
+@onready var walldetec = $WallDetector
 
 var health = 3
 var bullet = load("res://bullet.tscn")
@@ -11,6 +12,11 @@ var instance
 var just_shot = false
 const SPEED = 7.0
 const JUMP_VELOCITY = 10.0
+var threshold_time = 0.2
+var timer = 0
+var action_started = false
+var climbing = false
+
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 20.0
@@ -38,12 +44,33 @@ func _unhandled_input(event):
 	
 func _physics_process(delta):
 	# Add the gravity.
-	if not is_on_floor():
+	if not is_on_floor() and not climbing:
 		velocity.y -= gravity * delta
 
+	if Input.is_action_just_pressed("ui_accept"):
+		action_started = true
+		
+	if Input.is_action_pressed("ui_accept") and action_started:
+		timer += delta
+		
+	if timer >= threshold_time and action_started:
+		action_started = false
+		timer = 0
+		if walldetec.is_colliding():
+			climbing = true
+			print(climbing)
+
+	if Input.is_action_just_released("ui_accept"):
+		if timer < threshold_time and action_started:
+			
+			print("press")
+		action_started = false
+		climbing = false
+		timer = 0
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and climbing == false:
 		velocity.y = JUMP_VELOCITY
+
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.

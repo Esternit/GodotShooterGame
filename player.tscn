@@ -150,6 +150,10 @@ _data = {
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_fmpau")
 
+[node name="WallDetector" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22519, 0)
+target_position = Vector3(0, 0, -1)
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_14jo3")
