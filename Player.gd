@@ -8,7 +8,7 @@ extends CharacterBody3D
 var health = 3
 var bullet = load("res://bullet.tscn")
 var instance
-
+var just_shot = false
 const SPEED = 7.0
 const JUMP_VELOCITY = 10.0
 
@@ -23,7 +23,8 @@ func _unhandled_input(event):
 		rotate_y(-event.relative.x * .005)
 		camera.rotate_x(-event.relative.y * .005)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
-	if Input.is_action_just_pressed("shoot"):
+	if event.is_action("shoot") and event.is_pressed() and not event.is_echo():
+		just_shot = true
 		play_shoot_effects()
 		instance = bullet.instantiate()
 		instance.position = raycast.global_position
@@ -32,6 +33,7 @@ func _unhandled_input(event):
 		if raycast.is_colliding():
 			var hit_player = raycast.get_collider()
 			hit_player.health -= 1
+		just_shot = false
 		
 	
 func _physics_process(delta):
