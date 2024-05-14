@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://c35wqxbp744kr"]
+[gd_scene load_steps=20 format=3 uid="uid://c35wqxbp744kr"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_fmpau"]
 [ext_resource type="PackedScene" uid="uid://dh4egc6v3bx2y" path="res://pistol.blend" id="2_fr3sf"]
 [ext_resource type="Texture2D" uid="uid://d2ellnfb76ynv" path="res://addons/kenney_particle_pack/star_06.png" id="3_1obr4"]
 [ext_resource type="Texture2D" uid="uid://db4kjiwe0hn6s" path="res://addons/kenney_particle_pack/circle_05.png" id="4_r285j"]
+[ext_resource type="Script" path="res://addons/grappling_hook_3d/src/hook_controller.gd" id="5_7vksu"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_14jo3"]
 
@@ -147,6 +148,13 @@ _data = {
 "shoot": SubResource("Animation_nipe3")
 }
 
+[sub_resource type="BoxMesh" id="BoxMesh_ljson"]
+size = Vector3(0.2, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e6jrk"]
+albedo_color = Color(0.396078, 0.396078, 0.396078, 1)
+metallic = 1.0
+
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_fmpau")
 
@@ -199,9 +207,33 @@ target_position = Vector3(0, 0, -50)
 collision_mask = 2
 collide_with_areas = true
 
+[node name="Hook Raycast" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, -25)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3h5k7")
 }
 autoplay = "IdleAnimation"
 playback_default_blend_time = 0.05
+
+[node name="HookController" type="Node" parent="." node_paths=PackedStringArray("hook_raycast", "player_body", "hook_source")]
+script = ExtResource("5_7vksu")
+hook_raycast = NodePath("../Camera3D/Hook Raycast")
+player_body = NodePath("..")
+launch_action_name = "launch_grapple"
+retract_action_name = "retract_grapple"
+hook_source = NodePath("../HookContainer0/Hook Source")
+
+[node name="HookContainer0" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0.5, 0.588954, 0.183007)
+mesh = SubResource("BoxMesh_ljson")
+surface_material_override/0 = SubResource("StandardMaterial3D_e6jrk")
+
+[node name="Hook Source" type="Marker3D" parent="HookContainer0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+
+[node name="HookContainer1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, -0.5, 0.589, 0.183)
+mesh = SubResource("BoxMesh_ljson")
+surface_material_override/0 = SubResource("StandardMaterial3D_e6jrk")
