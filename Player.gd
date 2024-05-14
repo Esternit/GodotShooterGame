@@ -47,9 +47,9 @@ func _unhandled_input(event):
 		instance.position = raycast.global_position
 		instance.transform.basis = raycast.global_transform.basis
 		get_parent().add_child(instance)
-		if raycast.is_colliding():
-			var hit_player = raycast.get_collider()
-			hit_player.health -= 1
+		#if raycast.is_colliding():
+			#var hit_player = raycast.get_collider()
+			#hit_player.hitter(1)
 		just_shot = false
 		
 	

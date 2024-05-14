@@ -45,6 +45,7 @@ orientation = 2
 
 [node name="Mob" type="CharacterBody3D" groups=["enemy"]]
 script = ExtResource("1_14a5s")
+accuracy = 0.5
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.985799, 0)
@@ -59,7 +60,7 @@ height = 5.36
 radius = 5.45
 
 [node name="pistol" parent="." groups=["gun"] instance=ExtResource("3_b8ww6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.75, -0.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.895, -0.572)
 
 [node name="MuzzleFlash" type="GPUParticles3D" parent="pistol"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0591493, -0.322411)
@@ -70,5 +71,15 @@ one_shot = true
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_0dkff")
 draw_pass_1 = SubResource("PlaneMesh_wjqdd")
+
+[node name="ShootCast" type="RayCast3D" parent="pistol"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.98023e-08, 0, -0.580707)
+target_position = Vector3(0, 0, -50)
+collide_with_areas = true
+
+[node name="ShootTimer" type="Timer" parent="pistol"]
+
+[node name="EnemyPos" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.895, -6.203)
 
 [connection signal="tree_entered" from="CollisionShape3D" to="CollisionShape3D" method="_on_tree_entered"]
