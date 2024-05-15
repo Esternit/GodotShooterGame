@@ -53,6 +53,6 @@ autostart = true
 
 [node name="Mob" parent="." instance=ExtResource("2_ehmxn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.229993, -8.70004)
-player_path = NodePath("../Player")
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="health_depleted" from="Mob" to="." method="_on_mob_health_depleted"]

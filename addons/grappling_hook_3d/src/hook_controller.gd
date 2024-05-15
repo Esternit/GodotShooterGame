@@ -52,6 +52,7 @@ func _attach_hook() -> void:
 
 
 func _retract_hook() -> void:
+	player_body.gravity = 20.0
 	is_hook_launched = false
 	
 	_hook_model.queue_free()
@@ -63,8 +64,14 @@ func _handle_hook(delta: float) -> void:
 	# Hook pull math
 	var pull_vector = (hook_target_position - player_body.global_position).normalized()
 	
-	player_body.velocity += pull_vector * pull_speed * delta * 60
+	#player_body.velocity += pull_vector * pull_speed * delta * 60
 	
+	player_body.gravity = -20.0
+
+	player_body.transform.origin = lerp(player_body.transform.origin, hook_target_position, 0.025)
+
+	if player_body.position.y > hook_target_position.y:
+		_retract_hook()
 	# Hook model
 	var source_position: Vector3
 	match true if hook_source else false:
